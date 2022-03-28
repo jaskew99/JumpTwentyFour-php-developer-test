@@ -35,6 +35,9 @@ class ReqresWrapper
 
         $res = $this->call('users');
 
+        if (!$res)
+            return null;
+
         foreach ($res->data as $user)
             $users[] = $user;
 

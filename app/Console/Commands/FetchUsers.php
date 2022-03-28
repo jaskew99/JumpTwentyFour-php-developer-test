@@ -47,6 +47,12 @@ class FetchUsers extends Command
         $page  = $this->option('page');
         $users = $this->api->getUsers($page);
 
+        if (!$users) {
+            echo "Unable to fetch users from Reqres API.";
+
+            return 1;
+        }
+
         foreach ($users->data as $user_data) {
             $user = new User();
 
