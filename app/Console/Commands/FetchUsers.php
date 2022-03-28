@@ -14,7 +14,7 @@ class FetchUsers extends Command
      *
      * @var string
      */
-    protected $signature = 'fetch:users';
+    protected $signature = 'fetch:users {--page=1}';
 
     /**
      * The console command description.
@@ -44,7 +44,8 @@ class FetchUsers extends Command
      */
     public function handle()
     {
-        $users = $this->api->getUsers();
+        $page  = $this->option('page');
+        $users = $this->api->getUsers($page);
 
         foreach ($users->data as $user_data) {
             $user = new User();
@@ -56,6 +57,8 @@ class FetchUsers extends Command
 
             $user->save();
         }
+
+        echo "Fetched ".count($users->data)." users. Page $page/".$users->total_pages;
 
         return 0;
     }

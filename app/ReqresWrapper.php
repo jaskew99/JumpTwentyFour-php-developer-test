@@ -11,7 +11,7 @@ class ReqresWrapper
         $url = self::BASE_URL . $endpoint;
 
         if ($data !== null)
-            $url .= http_build_query($data);
+            $url .= '?' . http_build_query($data);
 
         $curl = curl_init();
 
@@ -24,9 +24,9 @@ class ReqresWrapper
         return json_decode($output);
     }
 
-    public function getUsers ()
+    public function getUsers ($page = 1)
     {
-        return $this->call('users');
+        return $this->call('users', array('page' => $page));
     }
 
     public function getAllUsers ()
@@ -38,7 +38,7 @@ class ReqresWrapper
         foreach ($res->data as $user)
             $users[] = $user;
 
-        for ($page = 1; $page < $res->total_pages; $page++) {
+        for ($page = 2; $page <= $res->total_pages; $page++) {
             $res = $this->call('users', array('page' => $page));
 
             foreach ($res->data as $user)
